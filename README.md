@@ -45,13 +45,10 @@ As best I can tell this would be as close to a perfect solution as we could hope
 
 ### Bundling?
 
-I'm sure there is a way to bundle the ES6/wasm module with a bundler into a basic js file that could return a simple async common js interface and transpile the troublesome `import "wasm"` into something less experimental, but alas I couldn't figure it out.  This is where I'm asking anyone reading this to help me close this loop.  Snowpack was simple to setup but when it comes to bundling code, it recommends using a webpack plugin since its native bundling is still in alpha. Webpack threw a wide variety of errors but ultimately generated js that failed to load the WASM.  I'm sure a more experienced webpack user could tell me why.  I also tried browserify which needed the `esmify` plugin to handle es6 code and the `wasmify` plugin to handle importing wasm.  But these two plugins down play well together generating code that accesses the result of the wasm import before the import has complete (thank you async loading).
+I suspect there is a way to bundle the ES6/wasm module with a bundler into a basic async js file but this is where I hit the limits of my knowlesge of the javascript ecosystem.  Snowpack's bundling is immature and recommends the webpack plugin. My attempts with Webpack generated all kinds of non-usable javascript with little explanation as to why. I tried `browserify` which needed the `esmify` plugin to handle es6 code and the `wasmify` plugin to handle importing wasm.  But these two plugins don't play well together generating code that accesses the result of the `import "wasm"` before the import has run (thank you async loading).  This is where I need to ask for help from anyone with more understanding of this code bundling toolchain.
 
-Even once the bundling issues is sorted we still have a require that returns a promise - which is bothersome but not the end of the world.  ES6 module code has top level await - so at least there you could
+Even once this issue is sorted, we still have a require that returns a promise - which is not ideal.
 
-```js
-let Automerge = await import("automerge-wasm");
-```
 ### ASM JS
 
 One option that I have considered (and has been suggested to me) is to transpile the WASM to ASM.js which would allow simple synchronous loading and packaging.  I experimented with this and found while it worked great it produced javascript that was about 2x the side and 1/2 the speed of the native js implementation.  With this tradeoff I don't see anyone ever being willing to use this should we package it.
