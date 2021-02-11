@@ -46,8 +46,6 @@ As best I can tell this would be as close to a perfect solution as we could hope
 
 I suspect there is a way to bundle the ES6/wasm module with a bundler into a basic async js file but this is where I hit the limits of my knowledge of the javascript ecosystem.  Snowpack's bundling is immature and recommends the webpack plugin. My attempts with Webpack generated all kinds of non-usable javascript with little explanation as to why. I tried `browserify` which needed the `esmify` plugin to handle es6 code and the `wasmify` plugin to handle importing wasm.  But these two plugins don't play well together generating code that accesses the result of the `import "wasm"` before the import has run (thank you async loading).  This is where I need to ask for help from anyone with more understanding of this code bundling toolchain.
 
-But this beggs the question.  If we do transpile the async mjs into async cjs - is this the best scenario?
-
 ### ASM JS
 
 One option that I have considered (and has been suggested to me) is to transpile the WASM to ASM.js which would allow simple synchronous loading and packaging.  I experimented with this and found while it worked great it produced javascript that was about 2x the side and 1/2 the speed of the native js implementation.  With this tradeoff I don't see anyone ever being willing to use this should we package it.
@@ -84,4 +82,16 @@ or
 let Automerge = require("automerge-wasm")
 ```
 
+### But Isomorphic Apps
+
+The problem with having a node-only pand a ES6 module as separate packages is that it makes writing isomorphics codebases that run on both node and in browser difficult.
+
+The options are not good but here they are, as best as I can tell, as follows.
+
+1. Require people to require a different package on node vs the web
+2. Wait for node to fully support experimental wasm modules so the code can be used without the command line switch
+3. Expect people to write the app in ES6 and transpile into CommonJS with Webpack
+4. We transpile the ES6 package into CommonJS and require people writing in CommonJS to import a promise
+
+Options 3 and 4 require us to figure out the correct set of plugins and options to get an MJS/WASM module to transpile correctly.
 
