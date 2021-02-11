@@ -6,7 +6,6 @@ Here is a summary of my discoveries with regard to packaging AutomergeWASM.  The
 ### ES6 Modules
 
 The closest thing I've found to a perfect solution to all of this is ES6 modules.  These modules create a way to import code asynchronously but without adding async/promise syntax to the code.  For example, the entire [code](https://github.com/orionz/automerge-wasm/blob/main/index.mjs) for the AutomergeWASM implementation in ES6 modules is as follows.
-### M
 
 ```js
 import * as Automerge from "automerge"
