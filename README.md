@@ -44,7 +44,7 @@ As best I can tell this would be as close to a perfect solution as we could hope
 
 ### Bundling?
 
-I suspect there is a way to bundle the ES6/wasm module with a bundler into a basic async js file but this is where I hit the limits of my knowlesge of the javascript ecosystem.  Snowpack's bundling is immature and recommends the webpack plugin. My attempts with Webpack generated all kinds of non-usable javascript with little explanation as to why. I tried `browserify` which needed the `esmify` plugin to handle es6 code and the `wasmify` plugin to handle importing wasm.  But these two plugins don't play well together generating code that accesses the result of the `import "wasm"` before the import has run (thank you async loading).  This is where I need to ask for help from anyone with more understanding of this code bundling toolchain.
+I suspect there is a way to bundle the ES6/wasm module with a bundler into a basic async js file but this is where I hit the limits of my knowledge of the javascript ecosystem.  Snowpack's bundling is immature and recommends the webpack plugin. My attempts with Webpack generated all kinds of non-usable javascript with little explanation as to why. I tried `browserify` which needed the `esmify` plugin to handle es6 code and the `wasmify` plugin to handle importing wasm.  But these two plugins don't play well together generating code that accesses the result of the `import "wasm"` before the import has run (thank you async loading).  This is where I need to ask for help from anyone with more understanding of this code bundling toolchain.
 
 Even once this issue is sorted, we still have a require that returns a promise - which is not ideal.
 
