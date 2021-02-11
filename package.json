@@ -1,0 +1,14 @@
+{
+  "name": "automerge-wasm-testapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --experimental-wasm-modules index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "automerge-wasm": "orionz/automerge-wasm"
+  }
+}
